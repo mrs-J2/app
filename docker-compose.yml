@@ -1,0 +1,78 @@
+# docker-compose.yml (place it in the root of the project: ./sohir/docker-compose.yml)
+version: '3.9'
+
+services:
+  # ==================== MySQL Database ====================
+  mysql:
+    image: mysql:8.0
+    container_name: school-portal-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: school_portal
+      MYSQL_ROOT_PASSWORD: rootpassword      # change in production
+      MYSQL_PASSWORD: secret
+      MYSQL_USER: laravel
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      #- ./school_portal.sql:/docker-entrypoint-initdb.d/1-init.sql:ro   # auto import on first start
+    ports:
+      - "3307:3306"   # host:container (3307 so you don't conflict with local MySQL)
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "--password=rootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # ==================== Laravel Backend (PHP + Nginx) ====================
+  laravel:
+    build:
+      context: ./school-portal
+      dockerfile: Dockerfile          # you will create this (see below)
+    container_name: school-portal-api
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      APP_NAME: "School Portal"
+      APP_ENV: local
+      APP_KEY: base64:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=   # will be generated automatically
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:8000
+
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: school_portal
+      DB_USERNAME: laravel
+      DB_PASSWORD: secret
+    volumes:
+      - ./school-portal:/var/www/html
+      - laravel-storage:/var/www/html/storage/app/public
+
+    ports:
+      - "8000:80"
+
+  # ==================== Angular Frontend ====================
+  angular:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile          # the one you already wrote (perfect!)
+    container_name: school-portal-frontend
+    restart: unless-stopped
+    ports:
+      - "4200:80"                     # Nginx inside container listens on 80 → host 4200
+    depends_on:
+      - laravel
+
+
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql-data:
+  laravel-storage:
