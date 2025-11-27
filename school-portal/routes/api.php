@@ -12,12 +12,21 @@ use App\Http\Controllers\QuizQuestionController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExamQuestionController;
 use App\Http\Controllers\Enseignant\CoursController;
-
+RateLimiter::for('api', function (Request $request) {
+    return Limit::perMinute(60)->by($request->ip());
+});
 /* ----------------------------------------------------------
    1.  AUTH  (no prefix)
 ---------------------------------------------------------- */
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login',    [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('log');
+/* ----------------------------------------------------------
+   1.1  BACKUP
+---------------------------------------------------------- */
+Route::get('/backup-now', function () {
+    exec('cd /d "' . base_path() . '" && backup.bat');
+    return "Backup lancé, va voir dans le dossier backups/";
+});
 
 /* ----------------------------------------------------------
    2.  PUBLIC  (no prefix)

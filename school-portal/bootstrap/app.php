@@ -17,8 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'student' => \App\Http\Middleware\RequireStudent::class,
             'teacher' => \App\Http\Middleware\RequireTeacherOrAdmin::class,
             'admin' => \App\Http\Middleware\RequireAdmin::class,
+            'log' => \App\Http\Middleware\LogActions::class,
         ]);
-    })
+         })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

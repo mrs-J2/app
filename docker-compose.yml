@@ -1,4 +1,3 @@
-# docker-compose.yml (place it in the root of the project: ./sohir/docker-compose.yml)
 version: '3.9'
 
 services:
@@ -15,9 +14,9 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "no"
     volumes:
       - mysql-data:/var/lib/mysql
-      #- ./school_portal.sql:/docker-entrypoint-initdb.d/1-init.sql:ro   # auto import on first start
+      - ./fresh_dump.sql:/docker-entrypoint-initdb.d/1-fresh-dump.sql:ro
     ports:
-      - "3307:3306"   # host:container (3307 so you don't conflict with local MySQL)
+      - "3307:3306"   
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "--password=rootpassword"]
       interval: 5s
@@ -66,12 +65,13 @@ services:
     depends_on:
       - laravel
 
-
+# ==================== Adminer ====================
   adminer:
     image: adminer
     restart: unless-stopped
     ports:
       - "8080:8080"
+
 
 volumes:
   mysql-data:
