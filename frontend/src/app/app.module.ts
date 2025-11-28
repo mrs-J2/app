@@ -41,6 +41,8 @@ import { ManageStudentsComponent } from './pages/manage-students/manage-students
 import { ManageClassesComponent } from './pages/manage-classes/manage-classes.component';
 import { CourseApprovalsComponent } from './pages/course-approvals/course-approvals.component';
 import { AdminUserDetailComponent } from './pages/admin-user-detail/admin-user-detail.component';
+import { ContactComponent } from '@pages/contact/contact.component';
+import { AboutComponent } from './pages/about/about.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +81,9 @@ import { AdminUserDetailComponent } from './pages/admin-user-detail/admin-user-d
     ManageStudentsComponent,
     ManageClassesComponent,
     CourseApprovalsComponent,
-    AdminUserDetailComponent
+    AdminUserDetailComponent,
+    ContactComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
@@ -87,6 +91,7 @@ import { AdminUserDetailComponent } from './pages/admin-user-detail/admin-user-d
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    
     MatSnackBarModule,
     BrowserAnimationsModule
   ],

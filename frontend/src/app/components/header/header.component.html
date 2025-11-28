@@ -16,7 +16,7 @@
         <li class="nav-item mx-3">
           <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
         </li>
-
+      
         <!-- ✅ Affichage selon le rôle -->
         <li class="nav-item mx-3" *ngIf="role === 'student'">
           <a class="nav-link" routerLink="/mes-cours-etudiant" routerLinkActive="active">Mes Cours</a>
@@ -38,12 +38,14 @@
           </ul>
         </li>
 
-        <li class="nav-item mx-3" *ngIf="isLoggedIn">
-          <a class="nav-link" routerLink="/forum" routerLinkActive="active">Forum</a>
+        
+        <li class="nav-item mx-3" >
+          <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
         </li>
-        <li class="nav-item mx-3" *ngIf="role !== 'teacher' && role !== 'admin'">
-          <a class="nav-link" >Mes Offres</a>
+        <li class="nav-item mx-3" >
+          <a class="nav-link" routerLink="/about" routerLinkActive="active">À propos</a>
         </li>
+        
         
       </ul>
     </div>

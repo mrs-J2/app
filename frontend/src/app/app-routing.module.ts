@@ -24,9 +24,12 @@ import { ManageStudentsComponent } from './pages/manage-students/manage-students
 import { ManageClassesComponent } from './pages/manage-classes/manage-classes.component';
 import { CourseApprovalsComponent } from './pages/course-approvals/course-approvals.component';
 import { AdminUserDetailComponent } from './pages/admin-user-detail/admin-user-detail.component';
+import { ContactComponent } from '@pages/contact/contact.component';
+import { AboutComponent } from '@pages/about/about.component';
 
 const routes: Routes = [
   { path: '', component: AccueilComponent},
+  { path: 'about', component: AboutComponent },
   { path: 'connexion', component: ConnexionComponent },
   { path: 'inscription', component: InscriptionComponent },
   { path: 'mes-cours-etudiant', component: MesCoursEtudiantComponent, canActivate: [AuthGuard] },
@@ -49,6 +52,7 @@ const routes: Routes = [
   { path: 'admin/classes', component: ManageClassesComponent, canActivate: [AuthGuard] },
   { path: 'admin/class-requests', component: CourseApprovalsComponent, canActivate: [AuthGuard] },
   { path: 'admin/users/:id', component: AdminUserDetailComponent, canActivate: [AuthGuard] },
+  { path: 'contact', component: ContactComponent },
   { path: '**', redirectTo: '' }
 ];
 
